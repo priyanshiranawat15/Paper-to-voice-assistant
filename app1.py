@@ -24,7 +24,7 @@ from tempfile import NamedTemporaryFile
 
 # Set up Google API Key (consider using st.secrets in production)
 
-os.environ['GOOGLE_API_KEY'] = 'AIzaSyCDFAgopfDNO3s-xUj-lnZ6PNbgxwAtQSs'
+os.environ['GOOGLE_API_KEY'] = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
 
 # os.environ['GOOGLE_API_KEY'] = st.secrets['GOOGLE_API_KEY'] if 'GOOGLE_API_KEY' in st.secrets else ''
