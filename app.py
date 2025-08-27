@@ -21,14 +21,16 @@ from pydub.generators import Sine
 from langchain_core.pydantic_v1 import BaseModel
 from tqdm import tqdm
 from tempfile import NamedTemporaryFile
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Set up Google API Key (consider using st.secrets in production)
-
-os.environ['GOOGLE_API_KEY'] = #ENTER YOUR API KEY
+os.environ['GOOGLE_API_KEY'] = os.getenv('GOOGLE_API_KEY')
 genai.configure(api_key=os.environ['GOOGLE_API_KEY'])
 
 llm= ChatGoogleGenerativeAI(
-    model= #CHOOSE A MODEL,
+    model=os.getenv('GOOGLE_MODEL_NAME'),
     temperature=0,
     max_tokens=None,
     max_retries=2
@@ -86,7 +88,7 @@ def process_pdf(pdf_path):
     return image_filenames
 
 def get_text_to_voice(text, speed=0.9, accent="EN-US", language="EN"):
-    hf_client = Client(#CHOOSE A MODEL)
+    hf_client = Client("neuromod0/MeloTTS-English-v3")
     file_path = hf_client.predict(
         text=text,
         language=language,
@@ -436,7 +438,7 @@ def main():
             image_paths = process_pdf(pdf_path)
             
             # Encode images
-            encoded_images = [encode_image_to_base64(f"/Users/priyanshiranawat/Gemini-vision/temp/Photo_{i:03d}.jpg") for i in range(len(image_paths))]
+            encoded_images = [encode_image_to_base64(f"temp/Photo_{i:03d}.jpg") for i in range(len(image_paths))]
 
             # Create workflow
             status_text.text("Generating podcast workflow...")

@@ -1,0 +1,11 @@
+streamlit
+pypdfium2
+langchain-google-genai
+langgraph
+langchain-core
+google-generativeai
+gradio-client
+pydub
+tqdm
+python-dotenv
+pytest
