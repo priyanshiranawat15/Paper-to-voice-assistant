@@ -4,7 +4,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red.svg)](https://streamlit.io)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## 🌟 Overview
 
@@ -296,9 +295,6 @@ isort src/
 - [ ] **Visual Enhancements**: Generate accompanying slide decks
 - [ ] **Community Features**: Share and discover generated podcasts
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -310,18 +306,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Inspiration
 This project was inspired by the need to make academic research more accessible and engaging for broader audiences.
-
-## 📞 Support & Contact
-
-### Get Help
-- 📧 **Email**: [your-email@example.com]
-- 🐛 **Issues**: [GitHub Issues](https://github.com/priyanshiranawat15/Paper-to-voice-assistant/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/priyanshiranawat15/Paper-to-voice-assistant/discussions)
-
-### Community
-- 🌟 **Star the repo** if you find it useful
-- 🔄 **Share with colleagues** in academia and research
-- 🤝 **Contribute** to help improve the project
 
 ---
 
