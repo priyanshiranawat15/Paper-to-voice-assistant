@@ -418,16 +418,13 @@ def consolidate_voice(audio_paths, voice_dir):
 def main():
     st.title("📄 Research Paper Podcast Generator 🎙️")
     
-    # Sidebar for configuration
     st.sidebar.header("Configuration")
     tone = st.sidebar.selectbox("Podcast Tone", ["Formal", "Conversational"])
     language = st.sidebar.selectbox("Language", ["EN"])
 
-    # PDF Upload
     uploaded_pdf = st.file_uploader("Upload Research Paper (PDF)", type=['pdf'])
     
     if uploaded_pdf is not None:
-        # Progress tracking
         progress_bar = st.progress(0)
         status_text = st.empty()
 
@@ -437,81 +434,59 @@ def main():
                 f.write(uploaded_pdf.getbuffer())
             pdf_path = os.path.join("temp", uploaded_pdf.name)
 
-            # Process PDF into images
             status_text.text("Processing PDF pages...")
             progress_bar.progress(10)
             image_paths = process_pdf(pdf_path)
             
-            # Encode images
             encoded_images = [encode_image_to_base64(f"/Users/priyanshiranawat/Gemini-vision/temp/Photo_{i:03d}.jpg") for i in range(len(image_paths))]
 
-            # Create workflow
             status_text.text("Generating podcast workflow...")
             progress_bar.progress(30)
             workflow_app, _ = create_podcast_workflow()
 
-            # Run workflow
             status_text.text("Analyzing research paper...")
             progress_bar.progress(50)
             output = list(workflow_app.stream({'image_path': encoded_images}))
 
-            # Extract dialog
             status_text.text("Generating podcast dialog...")
             progress_bar.progress(70)
             topics = []
             dialog_planner = {}
             
+            # Process dialog only once
             for responses in output[10:17]:
                 dialog = responses['generate_dialog']['Dialog'][0]
                 dialog = dialog.strip().split('## Podcast Script')[-1].strip()
                 dialog = dialog.replace('[Guest name]', 'Dr. Sharma')
                 dialog = dialog.replace('**Guest:**', '**Dr. Sharma**')
                 dialog_planner[len(dialog_planner)] = dialog
-            print(dialog)
-            print(dialog_planner)
 
-            # Generate audio
+            # Generate audio only once
             status_text.text("Synthesizing podcast audio...")
             progress_bar.progress(90)
             
-            # Temporary directory for voice generation
             voice_dir = os.path.join("temp", "voices")
             os.makedirs(voice_dir, exist_ok=True)
+            
+            # Remove the duplicate audio generation
             audio_paths = store_voice(dialog_planner)
-            print("Generated audio paths:", audio_paths)
-
-            # Generate voice for each dialog part
-            audio_paths = []
-            for _, dialog in dialog_planner.items():
-                dialog_parts = dialog.split('\n')
-                for part in dialog_parts:
-                    if len(part.strip()) > 0:
-                        try:
-                            audio_file = generate_podcast_audio(part.strip(),language)
-                            audio_paths.append(audio_file)
-                        except Exception as e:
-                            st.warning(f"Could not generate voice for part: {e}")
-
-            # Consolidate voice tracks
-            print(audio_paths)
+            
+            # Remove the second audio generation loop that was creating duplicates
             final_audio_path = consolidate_voice(audio_paths, voice_dir)
-            print(final_audio_path)
 
-            # Final display
             progress_bar.progress(100)
             status_text.text("Podcast generation complete!")
 
-            # Play audio
             if final_audio_path:
-                #with open(final_audio_path, 'rb') as audio_file:
                 st.audio(final_audio_path, format="audio/mpeg")
                 st.success("Podcast generated successfully!")
 
         except Exception as e:
             import traceback
-            
             st.error(f"An error occurred: {traceback.format_exc()}")
             st.error("Please check your PDF and try again.")
 
 if __name__ == "__main__":
     main()
+          
+         
